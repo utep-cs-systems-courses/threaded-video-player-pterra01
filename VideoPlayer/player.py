@@ -25,20 +25,20 @@ class QueueThread:
         return frame
 
 def extractFrames(filename, readframes):
-    count =  0
+    count =  0 #frame count
 
-    vidcap = cv2.VideoCapture(filename)
+    vidcap = cv2.VideoCapture(filename) #this will open the video file
 
-    success, image = vidcap.read() 
+    success, image = vidcap.read() #read first image
     
     print(f'Reading frame {count} {success}')
     while success:
         
-        readframes.enqueue(image) 
+        readframes.enqueue(image) #add frames to queue
 
         success, image = vidcap.read()
         print(f'Reading frame {count}')
         count += 1
         
     print('Finished extracting frames :)')
-    readframes.enqueue('stop') 
+    readframes.enqueue('stop') # to know where to stop
