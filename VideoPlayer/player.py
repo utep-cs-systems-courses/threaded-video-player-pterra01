@@ -23,3 +23,22 @@ class QueueThread:
         self.lock.release()
         self.empty.release()
         return frame
+
+def extractFrames(filename, readframes):
+    count =  0
+
+    vidcap = cv2.VideoCapture(filename)
+
+    success, image = vidcap.read() 
+    
+    print(f'Reading frame {count} {success}')
+    while success:
+        
+        readframes.enqueue(image) 
+
+        success, image = vidcap.read()
+        print(f'Reading frame {count}')
+        count += 1
+        
+    print('Finished extracting frames :)')
+    readframes.enqueue('stop') 
