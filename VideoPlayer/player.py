@@ -83,3 +83,19 @@ def displayFrames(grayframes):
     print('Finished display :)')
     
     cv2.destroyAllWindows() # make sure we cleanup the windows
+
+filename = '../clip.mp4' #load clip.mp4
+
+#queues
+readframes = QueueThread()
+grayframes = QueueThread()
+           
+#make each thread target each def with their parameters as the args 
+extractThread = threading.Thread(target = extractFrames, args = (filename, readframes))
+convertThread = threading.Thread(target = convertToGrayScale, args = (readframes, grayframes))
+displayThread = threading.Thread(target = displayFrames, args = (grayframes,))
+
+#start threads
+extractThread.start()
+convertThread.start()
+displayThread.start()
