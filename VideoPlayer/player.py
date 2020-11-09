@@ -42,3 +42,44 @@ def extractFrames(filename, readframes):
         
     print('Finished extracting frames :)')
     readframes.enqueue('stop') # to know where to stop
+
+def convertToGrayScale(readframes, grayframes):
+    count = 0 #frame count
+
+    while True: #going through the color frames
+        print(f'Converting Frame {count}')
+
+        getFrame = readframes.dequeue() #load the frames
+        if getFrame == 'stop': 
+            break
+        
+        #convert the image to grayscale
+        grayscaleFrame = cv2.cvtColor(getFrame, cv2.COLOR_BGR2GRAY)
+
+        grayframes.enqueue(grayscaleFrame) #add gray frames to queue
+        
+        count += 1
+
+    print('Finished converting to gray :)')
+    grayframes.enqueue('stop') # to know where to  
+
+def displayFrames(grayframes):
+    count = 0 #frame count
+
+    while True: #going through gray frames
+        print(f'Displaying Frame {count}')
+
+        frame = grayframes.dequeue() #load the frame
+        if frame == 'stop': # to know where to stop
+            break
+        
+        cv2.imshow('Video', frame) #display image called Video
+        
+        if(cv2.waitKey(42) and 0xFF == ord("q")): #wait for 42ms & check if user quits
+           break
+
+        count += 1
+
+    print('Finished display :)')
+    
+    cv2.destroyAllWindows() # make sure we cleanup the windows
